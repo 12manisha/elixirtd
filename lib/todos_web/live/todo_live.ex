@@ -20,10 +20,12 @@ defmodule TodosWeb.TodoLive do
       <div>
         <%= for todo <- @todos do %>
           <div>
-            <input type="checkbox"
-                   phx-change="toggle_done"
-                   value={todo.id}
-                   { if todo.done, do: "checked" } />
+            <input
+              type="checkbox"
+              phx-click="delete_todo"
+              value={todo.id}
+              phx-value-id={todo.id}
+            />
             <%= todo.title %>
           </div>
         <% end %>
@@ -32,20 +34,14 @@ defmodule TodosWeb.TodoLive do
     """
   end
 
-
   def handle_event("add", %{"todo" => todo}, socket) do
     TaskManager.create_todo(todo)
     {:noreply, fetch(socket)}
   end
 
-  def handle_event("toggle_done", id, socket) do
+  def handle_event("delete_todo", %{"id" => id}, socket) do
     todo = TaskManager.get_todo!(id)
-    TaskManager.update_todo(todo, %{done: !todo.done})
-    {:noreply, fetch(socket)}
-  end
-
-
-  def handle_info({:todo_created, _todo}, socket) do
+    TaskManager.delete_todo(todo)
     {:noreply, fetch(socket)}
   end
 
@@ -53,10 +49,7 @@ defmodule TodosWeb.TodoLive do
     {:noreply, fetch(socket)}
   end
 
-
   defp fetch(socket) do
-    todos = TaskManager.list_todos() || []
-    assign(socket, todos: todos)
+    assign(socket, todos: TaskManager.list_todos() || [])
   end
-
 end

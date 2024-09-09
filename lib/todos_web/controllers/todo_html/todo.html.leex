@@ -1,8 +1,0 @@
-<form phx-submit="add">
-  <input type="text" name="todo[title]" placeholder="What to do" value="<%= @changeset.data.title %>" phx-target="<%= @myself %>"/>
-  <button type="submit" phx-disable-with="Adding...">Add</button>
-</form>
-
-<%= for todo <- @todos do %>
-  <div><%= todo.title %></div>
-<% end %>

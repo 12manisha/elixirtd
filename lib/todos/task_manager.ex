@@ -105,8 +105,8 @@ end
       %Ecto.Changeset{data: %Todo{}}
 
   """
-  def change_todo(%Todo{} = todo, attrs \\ %{}) do
-    Todo.changeset(todo, attrs)
+  def change_todo(%Todo{} = todo) do
+    Todo.changeset(todo, %{})
   end
 
   def subscribe do
